@@ -29,7 +29,10 @@ class InventoryDataTable extends DataTable
                         </div>';
             })
             ->addColumn('action', function (Inventory $inventory) {
-                return '<a href="' . route('edit', $inventory->inventory_id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
+                return '<a href="' . route('edit', $inventory->inventory_id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                <a href="' . route('penjualan', $inventory->inventory_id) . '" class="btn btn-sm btn-primary">Penjualan</a>
+                <a href="' . route('pembelian', $inventory->inventory_id) . '" class="btn btn-sm btn-primary">Pembelian</a>
+                ';
             })
             ->editColumn('created_at', '{{\Carbon\Carbon::parse($created_at, "UTC")->setTimezone("Asia/Jakarta")->format("d-m-Y H:i")}}')
             ->rawColumns(['action', 'checkbox']);

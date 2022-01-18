@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\InventoryDataTable;
 use App\Http\Requests\InventoryRequest;
+use App\Http\Requests\TransaksiRequest;
 use App\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,72 @@ class InventoryController extends Controller
     {
         return view('create');
     }
+
+
+    public function pembelian()
+    {
+        $id = request()->route('id');
+        if (!is_numeric($id)) {
+            return redirect()->route('index')->withErrors('ID Produk Invalid');
+        }
+        $inventory = Inventory::where('inventory_id', $id)->first();
+        if (!$inventory) {
+            return redirect()->route('index')->withErrors('Produk Tidak Ditemukan');
+        }
+        return view('pembelian', compact('inventory'));
+    }
+
+    public function pembelianSave(TransaksiRequest $request)
+    {
+        $input = $request->validated();
+        $id = request()->route('id');
+        if (!is_numeric($id)) {
+            return redirect()->route('index')->withErrors('ID Produk Invalid');
+        }
+        $inventory = Inventory::where('inventory_id', $id)->first();
+        if (!$inventory) {
+            return redirect()->route('index')->withErrors('Produk Tidak Ditemukan');
+        }
+        $inventory->stok += $input['amount'];
+        $inventory->save();
+        $amount = $input['amount'];
+        return view('invoice', compact('inventory', 'amount'));
+    }
+
+    public function penjualan()
+    {
+        $id = request()->route('id');
+        if (!is_numeric($id)) {
+            return redirect()->route('index')->withErrors('ID Produk Invalid');
+        }
+        $inventory = Inventory::where('inventory_id', $id)->first();
+        if (!$inventory) {
+            return redirect()->route('index')->withErrors('Produk Tidak Ditemukan');
+        }
+        return view('penjualan', compact('inventory'));
+    }
+
+    public function penjualanSave(TransaksiRequest $request)
+    {
+        $input = $request->validated();
+        $id = request()->route('id');
+        if (!is_numeric($id)) {
+            return redirect()->route('index')->withErrors('ID Produk Invalid');
+        }
+        $inventory = Inventory::where('inventory_id', $id)->first();
+        if (!$inventory) {
+            return redirect()->route('index')->withErrors('Produk Tidak Ditemukan');
+        }
+        if(($inventory->stok - $input['amount']) < 0){
+            return redirect()->back()->withErrors('stok tidak cukup');
+        }
+        $inventory->stok -= $input['amount'];
+        $inventory->save();
+        $amount = $input['amount'];
+        return view('invoice', compact('inventory', 'amount'));
+    }
+
+    
 
      /**
      * Create save post

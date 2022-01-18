@@ -27,5 +27,9 @@ Route::middleware('auth')->group(function(){
     Route::post('/edit/{id}', 'InventoryController@editSave')->where('id', '[0-9]+');
     Route::get('/create', 'InventoryController@create')->name('create');
     Route::post('/create', 'InventoryController@createSave');
+    Route::get('/pembelian/{id}', 'InventoryController@pembelian')->name('pembelian')->where('id', '[0-9]+');
+    Route::post('/pembelian/{id}', 'InventoryController@pembelian')->where('id', '[0-9]+');
+    Route::get('/penjualan/{id}', 'InventoryController@penjualan')->name('penjualan')->where('id', '[0-9]+');
+    Route::post('/penjualan/{id}', 'InventoryController@penjualanSave')->where('id', '[0-9]+');
 });
 
