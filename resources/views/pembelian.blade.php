@@ -20,17 +20,6 @@
                 @enderror
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-6 no-margin-bottom">
-                <label for="stok">Stok</label>
-                <input type="number" class="form-control" name="stok" id="stok" value="@if(old('stok')){{old('stok')}}@else{{$inventory->stok}}@endif" placeholder="Stok Produk">
-                @error('stok')
-                <div class="invalid-feedback" style="display: block">
-                    {{$message}}
-                </div>
-                @enderror
-            </div>
-        </div>
         <br>
         <div style="text-align: right">
         <button type="submit" style="width: 30%" class="btn btn-primary">Simpan</button>
